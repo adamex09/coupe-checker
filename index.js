@@ -19,6 +19,8 @@ app.get('/db', function (request, response) {
 
 //App start
 app.get('/', function (req, res) { res.send('Hello World') })
+app.set('port', (process.env.PORT || 5000))
+app.use(express.static(__dirname + '/public'))
 
 
 //Port listening
