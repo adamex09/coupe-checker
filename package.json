@@ -1,15 +1,28 @@
 {
-  "name": "nodejs",
+  "name": "coupe-checker",
   "engines": {
     "node": "6.11.1"
   },
   "version": "1.0.0",
-  "description": "",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "main": "index.js",
-  "author": "",
+  "author": "Adam Hornyak",
   "license": "ISC",
   "dependencies": {
     "express": "^4.16.2",
     "pg": "^7.4.1"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adamex09/coupe-checker.git"
+  },
+  "bugs": {
+    "url": "https://github.com/adamex09/coupe-checker/issues"
+  },
+  "homepage": "https://github.com/adamex09/coupe-checker#readme",
+  "description": ""
 }
