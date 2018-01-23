@@ -18,9 +18,7 @@ app.get('/db', function (request, response) {
 });
 
 //App start
-app.set('view engine', 'pug')
-app.set('port', (process.env.PORT || 5000))
-app.use(express.static(__dirname + '/public'))
+app.get('/', function (req, res) { res.send('Hello World') })
 
 
 //Port listening
