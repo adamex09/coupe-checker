@@ -18,13 +18,13 @@ app.get('/db', function (request, response) {
     if (err) {
       return console.error('Error acquiring client', err.stack)
     }
-    client.query('SELECT name from test_table', (err, result) => {
+    client.query('SELECT * from cars', (err, result) => {
       release()
       if (err) {
         return console.error('Error executing query', err.stack)
       }
-      console.log(result.rows)
-      response.send(result.rows[0].name)
+      console.log('Table rows output')
+      response.send(result.rows)
     })
   })
 
