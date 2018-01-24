@@ -6,31 +6,27 @@ var app = express();
 console.log(process.env.DATABASE_URL)
 
 //Database config
-const { Client } = require('pg');
-const client = new Client({
-  connectionString: process.env.DATABASE_URL,
-  ssl: true,
-});
-// await client.connect();
-
-
-client.connect()
+const { Pool, Client } = require('pg')
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL
+})
 
 app.get('/db', function (request, response) {
 
-  client.query('SELECT $1::text as message', ['Hello world!'], (err, res) => {
-    console.log(err ? err.stack : res.rows[0].message) // Hello World!
-    client.end()
-  })
 
-//Database config
-  // client.query('SELECT * FROM test_table', function(err, result) {
-  //     if (err)
-  //      { console.error(err); response.send("Error " + err); }
-  //     else
-  //      { response.render('pages/db', {results: result.rows} ); }
-  //      client.end();
-  //   });
+  pool.connect((err, client, release) => {
+    if (err) {
+      return console.error('Error acquiring client', err.stack)
+    }
+    client.query('SELECT name from test_table', (err, result) => {
+      release()
+      if (err) {
+        return console.error('Error executing query', err.stack)
+      }
+      console.log(result.rows)
+      response.send(result.rows[0].name)
+    })
+  })
 
 });
 
