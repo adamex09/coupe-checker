@@ -1,0 +1,93 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>jQuery Tabullet Plugin Example</title>
+  <link href="http://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <script src="http://code.jquery.com/jquery-1.12.0.min.js"></script>
+  <script type="text/javascript" src="/public/Tabullet.js"></script>
+
+  <style>
+  body {
+    background-color:#fafafa;}
+    .container { margin:50px auto;}
+    h2 { text-align: center;}
+  </style>
+
+  <body>
+  <h2>Jelenlegi tagok</h2>
+  <script>
+  var source = []
+  $(function () {
+    function resetTabullet() {
+      $("#table").tabullet({
+        data: source,
+        action: function (mode, data) {
+          console.dir(mode);
+          if (mode === 'save') {
+            source.push(data);
+            var http = new XMLHttpRequest();
+            var url = "/insert";
+            var params = "name=" + data['name'] + "&plate=" + data['plate'];
+            http.open("POST", url, true);
+            http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            http.send(params);
+          }
+          if (mode === 'edit') {
+            for (var i = 0; i < source.length; i++) {
+              if (source[i].id == data.id) {
+                source[i] = data;
+              }
+            }
+          }
+          if(mode == 'delete'){
+            for (var i = 0; i < source.length; i++) {
+              if (source[i].id == data) {
+                source.splice(i,1);
+                break;
+              }
+            }
+          }
+          resetTabullet();
+        }
+      });
+    }
+
+    $.getJSON("/db").then(function(value) {
+      value.forEach(function(element) {
+        source.push(element);
+      });
+      resetTabullet();
+    })
+
+  });
+  </script>
+  <div class="jquery-script-clear"></div>
+</div>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      <table class="table table-hover" id="table">
+        <thead>
+          <tr data-tabullet-map="id">
+            <th width="100" data-tabullet-map="_index" data-tabullet-readonly="true">
+              #
+            </th>
+            <th data-tabullet-map="name">Név</th>
+            <th data-tabullet-map="plate">Rendszám</th>
+            <th width="100" data-tabullet-type="edit"></th>
+            <th width="100" data-tabullet-type="delete"></th>
+          </tr>
+        </thead>
+      </table>
+    </div>
+  </div>
+</div>
+
+</script>
+</body>
+</html>

@@ -2,41 +2,55 @@
 var express = require('express');
 var request = require('request');
 var app = express();
-
-console.log(process.env.DATABASE_URL)
+var bodyParser = require('body-parser');
 
 //Database config
 const { Pool, Client } = require('pg')
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL
 })
-
 app.get('/db', function (request, response) {
-
-
   pool.connect((err, client, release) => {
     if (err) {
       return console.error('Error acquiring client', err.stack)
     }
-    client.query('SELECT * from cars', (err, result) => {
+    client.query('SELECT  * from cars', (err, result) => { //row_number() OVER () as rnum,
       release()
       if (err) {
         return console.error('Error executing query', err.stack)
       }
-      console.log('Table rows output')
+      console.log('Table printed as output.')
       response.send(result.rows)
     })
   })
-
 });
-
-
 
 //App start
 app.get('/', function (req, res) { res.send('Hello World2') })
 app.set('port', (process.env.PORT || 5000))
-app.use(express.static(__dirname + '/public'))
+app.use('/public', express.static(__dirname + '/public'));
 
+//Admin page
+app.get('/admin', function(req,res){
+ res.sendFile(__dirname + '/admin.html');
+});
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.post('/insert', function(req, res) {
+  res.sendFile(__dirname + '/admin.html');
+  pool.connect((err, client, release) => {
+    if (err) {
+      return console.error('Error acquiring client', err.stack)
+    }
+    client.query('INSERT INTO cars(id, name, plate) VALUES (default, \''+req.body.name+'\', \''+req.body.plate+'\')', (err, result) => {
+      release()
+      if (err) {
+        return console.error('Error executing query', err.stack)
+      }
+      console.log('Row inserted')
+    })
+  })
+});
 
 //Port listening
 app.listen(app.get('port'), function() {
