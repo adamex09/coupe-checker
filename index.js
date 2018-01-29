@@ -36,18 +36,54 @@ app.get('/admin', function(req,res){
 });
 
 app.use(bodyParser.urlencoded({ extended: true }));
+
+//Database Insert
 app.post('/insert', function(req, res) {
   res.sendFile(__dirname + '/admin.html');
   pool.connect((err, client, release) => {
     if (err) {
       return console.error('Error acquiring client', err.stack)
     }
-    client.query('INSERT INTO cars(id, name, plate) VALUES (default, \''+req.body.name+'\', \''+req.body.plate+'\')', (err, result) => {
+    client.query('INSERT INTO cars(id, name, plate) VALUES (default, $1::text, $2::text)',[req.body.name,req.body.plate], (err, result) => {
       release()
       if (err) {
         return console.error('Error executing query', err.stack)
       }
       console.log('Row inserted')
+    })
+  })
+});
+
+//Database Update
+app.post('/update', function(req, res) {
+  res.sendFile(__dirname + '/admin.html');
+  pool.connect((err, client, release) => {
+    if (err) {
+      return console.error('Error acquiring client', err.stack)
+    }
+    client.query('UPDATE cars SET name = $1::text, plate = $2::text WHERE id = $3::integer',[req.body.name,req.body.plate,req.body.id], (err, result) => {
+      release()
+      if (err) {
+        return console.error('Error executing query', err.stack)
+      }
+      console.log('Row updated')
+    })
+  })
+});
+
+//Database Delete
+app.post('/delete', function(req, res) {
+  res.sendFile(__dirname + '/admin.html');
+  pool.connect((err, client, release) => {
+    if (err) {
+      return console.error('Error acquiring client', err.stack)
+    }
+    client.query('DELETE FROM cars WHERE id = $1::integer', [req.body.id], (err, result) => {
+      release()
+      if (err) {
+        return console.error('Error executing query', err.stack)
+      }
+      console.log('Row deleted')
     })
   })
 });

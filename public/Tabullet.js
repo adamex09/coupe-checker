@@ -12,9 +12,9 @@
             editClass: 'btn btn-default',
             deleteClass: 'btn btn-danger',
             saveClass: 'btn btn-success',
-            deleteContent: 'Delete',
-            editContent: 'Edit',
-            saveContent: 'Save',
+            deleteContent: 'Törlés',
+            editContent: 'Szerkesztés',
+            saveContent: 'Mentés',
             action: function () {
             }
         };
@@ -78,8 +78,11 @@
                         .attr('data-tabullet-type', mv.type)
                         .appendTo(tr);
                     td.find('button').click(function (event) {
-                        tr.remove();
-                        options.action('delete', $(tr).attr('data-tabullet-id'));
+                        var sure = confirm("Biztosan törlöd?")
+                        if (sure == true) {
+                          tr.remove()
+                          options.action('delete', $(tr).attr('data-tabullet-id'))
+                        }
                     });
                 }
                 else if (mv.type === 'edit') {
