@@ -30,7 +30,7 @@
             source.push(data);
 
             var http = new XMLHttpRequest();
-            var url = "/insert";
+            var url = "/admin/insert";
             var params = "name=" + data['name'] + "&plate=" + data['plate'];
             http.open("POST", url, true);
             http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -41,7 +41,7 @@
               if (source[i].id == data.id) {
                 source[i] = data;
                 var http = new XMLHttpRequest();
-                var url = "/update";
+                var url = "/admin/update";
                 var params = "name=" + data['name'] + "&plate=" + data['plate'] + "&id=" + data['id'];
                 http.open("POST", url, true);
                 http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -55,7 +55,7 @@
                 source.splice(i,1);
 
                 var http = new XMLHttpRequest();
-                var url = "/delete";
+                var url = "/admin/delete";
                 var params = "id=" + data;
                 http.open("POST", url, true);
                 http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");

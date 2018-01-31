@@ -26,20 +26,21 @@ app.get('/db', function (request, response) {
 });
 
 //App start
-app.get('/', function (req, res) { res.send('Hello World2') })
+app.get('/', function (req, res) { res.sendFile(__dirname + '/search.html') })
 app.set('port', (process.env.PORT || 5000))
 app.use('/public', express.static(__dirname + '/public'));
 
+
 //Admin page
 app.get('/admin', function(req,res){
- res.sendFile(__dirname + '/admin.html');
+ res.sendFile(__dirname + '/admin/admin.html');
 });
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
 //Database Insert
-app.post('/insert', function(req, res) {
-  res.sendFile(__dirname + '/admin.html');
+app.post('/admin/insert', function(req, res) {
+  res.sendFile(__dirname + '/admin/admin.html');
   pool.connect((err, client, release) => {
     if (err) {
       return console.error('Error acquiring client', err.stack)
@@ -55,8 +56,8 @@ app.post('/insert', function(req, res) {
 });
 
 //Database Update
-app.post('/update', function(req, res) {
-  res.sendFile(__dirname + '/admin.html');
+app.post('/admin/update', function(req, res) {
+  res.sendFile(__dirname + '/admin/admin.html');
   pool.connect((err, client, release) => {
     if (err) {
       return console.error('Error acquiring client', err.stack)
@@ -72,8 +73,8 @@ app.post('/update', function(req, res) {
 });
 
 //Database Delete
-app.post('/delete', function(req, res) {
-  res.sendFile(__dirname + '/admin.html');
+app.post('/admin/delete', function(req, res) {
+  res.sendFile(__dirname + '/admin/admin.html');
   pool.connect((err, client, release) => {
     if (err) {
       return console.error('Error acquiring client', err.stack)
