@@ -5,81 +5,81 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Coupe Klub Admin</title>
-  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
   <script type="text/javascript" src="/public/Tabullet.js"></script>
 
   <style>
-  body {
+    body {
     background-color:#fafafa;}
     .container { margin:50px auto;}
     h2 { text-align: center;}
-  </style>
-
+    </style>
+  </head>
   <body>
-  <h2>Jelenlegi tagok</h2>
-  <script>
-  var source = []
-  $(function () {
-    function resetTabullet() {
-      $("#table").tabullet({
-        data: source,
-        action: function (mode, data) {
-          console.dir(mode);
-          if (mode === 'save') {
-            source.push(data);
+    <h2>Jelenlegi tagok</h2>
+    <script>
+    var source = []
+    $(function () {
+      function resetTabullet() {
+        $("#table").tabullet({
+          data: source,
+          action: function (mode, data) {
+            console.dir(mode);
+            if (mode === 'save') {
+              source.push(data);
 
-            var http = new XMLHttpRequest();
-            var url = "/admin/insert";
-            var params = "name=" + data['name'] + "&plate=" + data['plate'];
-            http.open("POST", url, true);
-            http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            http.send(params);
-          }
-          if (mode === 'edit') {
-            for (var i = 0; i < source.length; i++) {
-              if (source[i].id == data.id) {
-                source[i] = data;
-                var http = new XMLHttpRequest();
-                var url = "/admin/update";
-                var params = "name=" + data['name'] + "&plate=" + data['plate'] + "&id=" + data['id'];
-                http.open("POST", url, true);
-                http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                http.send(params);
+              var http = new XMLHttpRequest();
+              var url = "/admin/insert";
+              var params = "name=" + data['name'] + "&plate=" + data['plate'];
+              http.open("POST", url, true);
+              http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+              http.send(params);
+            }
+            if (mode === 'edit') {
+              for (var i = 0; i < source.length; i++) {
+                if (source[i].id == data.id) {
+                  source[i] = data;
+                  var http = new XMLHttpRequest();
+                  var url = "/admin/update";
+                  var params = "name=" + data['name'] + "&plate=" + data['plate'] + "&id=" + data['id'];
+                  http.open("POST", url, true);
+                  http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                  http.send(params);
+                }
               }
             }
-          }
-          if(mode == 'delete'){
-            for (var i = 0; i < source.length; i++) {
-              if (source[i].id == data) {
-                source.splice(i,1);
+            if(mode == 'delete'){
+              for (var i = 0; i < source.length; i++) {
+                if (source[i].id == data) {
+                  source.splice(i,1);
 
-                var http = new XMLHttpRequest();
-                var url = "/admin/delete";
-                var params = "id=" + data;
-                http.open("POST", url, true);
-                http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                http.send(params);
-                break;
+                  var http = new XMLHttpRequest();
+                  var url = "/admin/delete";
+                  var params = "id=" + data;
+                  http.open("POST", url, true);
+                  http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                  http.send(params);
+                  break;
+                }
               }
             }
+            resetTabullet();
           }
-          resetTabullet();
-        }
-      });
-    }
+        });
+      }
 
-    $.getJSON("/db").then(function(value) {
-      value.forEach(function(element) {
-        source.push(element);
-      });
-      resetTabullet();
-    })
+      $.getJSON("/db").then(function(value) {
+        value.forEach(function(element) {
+          source.push(element);
+        });
+        resetTabullet();
+      })
 
-  });
-  </script>
-  <div class="jquery-script-clear"></div>
-</div>
+    });
+    </script>
+    <div class="jquery-script-clear"></div>
+  </div>
 </div>
 <div class="container">
   <div class="row">

@@ -29,7 +29,7 @@
                 type: $(v).attr('data-tabullet-type')
             });
         });
-        var index = 0;
+        var index = 1;
         var data = options.data;
         $(data).each(function (i, v) {
             v._index = index++;

@@ -47,7 +47,7 @@ app.get('/admin', auth.connect(basic), function(req,res){
 app.use(bodyParser.urlencoded({ extended: true }));
 
 //Database Insert
-app.post('/admin/insert', function(req, res) {
+app.post('/admin/insert', auth.connect(basic), function(req, res) {
   res.sendFile(__dirname + '/admin/admin.html');
   pool.connect((err, client, release) => {
     if (err) {
@@ -64,7 +64,7 @@ app.post('/admin/insert', function(req, res) {
 });
 
 //Database Update
-app.post('/admin/update', function(req, res) {
+app.post('/admin/update', auth.connect(basic), function(req, res) {
   res.sendFile(__dirname + '/admin/admin.html');
   pool.connect((err, client, release) => {
     if (err) {
@@ -81,7 +81,7 @@ app.post('/admin/update', function(req, res) {
 });
 
 //Database Delete
-app.post('/admin/delete', function(req, res) {
+app.post('/admin/delete', auth.connect(basic), function(req, res) {
   res.sendFile(__dirname + '/admin/admin.html');
   pool.connect((err, client, release) => {
     if (err) {
