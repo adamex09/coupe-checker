@@ -4,6 +4,15 @@ var request = require('request');
 var app = express();
 var bodyParser = require('body-parser');
 
+//Login config
+var auth = require('http-auth');
+var basic = auth.basic({
+        realm: "Protected Area"
+    }, function (username, password, callback) {
+        callback(username === "admin" && password === process.env.ADMIN_PASSWORD);
+    }
+);
+
 //Database config
 const { Pool, Client } = require('pg')
 const pool = new Pool({
@@ -14,7 +23,7 @@ app.get('/db', function (request, response) {
     if (err) {
       return console.error('Error acquiring client', err.stack)
     }
-    client.query('SELECT  * from cars', (err, result) => { //row_number() OVER () as rnum,
+    client.query('SELECT  * from cars ORDER BY id', (err, result) => { //row_number() OVER () as rnum,
       release()
       if (err) {
         return console.error('Error executing query', err.stack)
@@ -30,9 +39,8 @@ app.get('/', function (req, res) { res.sendFile(__dirname + '/search.html') })
 app.set('port', (process.env.PORT || 5000))
 app.use('/public', express.static(__dirname + '/public'));
 
-
 //Admin page
-app.get('/admin', function(req,res){
+app.get('/admin', auth.connect(basic), function(req,res){
  res.sendFile(__dirname + '/admin/admin.html');
 });
 
