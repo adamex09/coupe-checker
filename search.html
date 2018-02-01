@@ -53,7 +53,7 @@ $(document).ready(function(){
     });
   })
   $('#txt-search').keyup(function(){
-    var searchField = $(this).val();
+    var searchField = $(this).val().normalize('NFD').replace(/[\u0300-\u036f]/g, "");
     if(searchField === '')  {
       $('#filter-records').html('');
       return;
@@ -63,7 +63,7 @@ $(document).ready(function(){
     var output = '<div class="container-fluid">';
     var count = 1;
     $.each(data, function(key, val){
-      if ((val.name.search(regex) != -1) || (val.plate.search(regex) != -1)) {
+      if ((val.name.normalize('NFD').replace(/[\u0300-\u036f]/g, "").search(regex) != -1) || (val.plate.normalize('NFD').replace(/[\u0300-\u036f]/g, "").search(regex) != -1)) {
         output += '<div class=".col- card">';
         output += '<div class=".col- card-body">';
         output += '<h5>' + val.name + '</h5>';
