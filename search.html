@@ -1,65 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
- <meta charset="UTF-8">
- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
- <title>Hyundai Coupe Klub tagok</title>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <title>Hyundai Coupe Klub tagok</title>
 
- <style>
-   p { margin-bottom: 0;}
-   .card { margin-bottom: 10px;}
-   </style>
+  <style>
+  p { margin-bottom: 0; color: #DADADA;}
+  h2 { width: 100%; padding-bottom:20px; color: #3D4456;}
+  h5 { color: #FFF;}
+  .card { margin-top: 15px; background-color: #3D4456; border-left: 2px solid #FFC100; border-radius: 0px;}
+  .navbar { background-color: #FFC100;}
+  .form-control { padding: 1rem; font-size: 1.2rem; border: 1px solid #ffffff;}
+  .form-control:focus {
+    color: #495057;
+    background-color: #fff;
+    border-color: #ffffff;
+    outline: 0;
+    box-shadow: 0 0 0 0 rgba(255,255,255,.0);}
+  body { background-color: #3D4456;}
+  </style>
 
 </head>
 <body>
- <div class="container" style="padding:50px 10%;">
-   <h1>Hyundai Coupe Klub tagok</h1>
- <form role="form">
-       <div class="form-group">
-         <input type="input" class="form-control input" id="txt-search" autofocus placeholder="Keresett rendszám vagy tag neve...">
-       </div>
- </form>
- <div id="filter-records"></div>
- </div>
+  <div class="navbar text-center">
+    <div class="container-fluid" style="padding-top:20px;">
+      <h2>Hyundai Coupe Klub tagok</h2>
+      <div class="container-fluid">
+        <form role="form">
+          <div class="form-group">
+            <input type="input" class="form-control input" id="txt-search" autofocus placeholder="Keresett rendszám vagy tag neve...">
+          </div>
+        </form>
+      </div>
+    </div>
+    </div>
+    <div id="filter-records"></div>
+
 </body>
 </html>
 <script type="text/javascript">
-  var data = []
-  $(document).ready(function(){
+var data = []
+$(document).ready(function(){
 
-   $.getJSON("/db").then(function(value) {
-     value.forEach(function(element) {
-       data.push(element);
-     });
-   })
-$('#txt-search').keyup(function(){
-           var searchField = $(this).val();
-     if(searchField === '')  {
-       $('#filter-records').html('');
-       return;
-     }
+  $.getJSON("/db").then(function(value) {
+    value.forEach(function(element) {
+      data.push(element);
+    });
+  })
+  $('#txt-search').keyup(function(){
+    var searchField = $(this).val();
+    if(searchField === '')  {
+      $('#filter-records').html('');
+      return;
+    }
 
-           var regex = new RegExp(searchField, "i");
-           var output = '<div class=".col-">';
-           var count = 1;
-       $.each(data, function(key, val){
-       if ((val.name.search(regex) != -1) || (val.plate.search(regex) != -1)) {
-         output += '<div class=".col- card">';
-         output += '<div class=".col- card-body">';
-         output += '<h5>' + val.name + '</h5>';
-         output += '<p>' + val.plate + '</p>'
-         output += '</div>';
-         output += '</div>';
-         if(count%2 == 0){
-         output += '</div><div class=".col-">'
-         }
-         count++;
-       }
-       });
-       output += '</div>';
-       $('#filter-records').html(output);
-       });
- });
+    var regex = new RegExp(searchField, "i");
+    var output = '<div class="container-fluid">';
+    var count = 1;
+    $.each(data, function(key, val){
+      if ((val.name.search(regex) != -1) || (val.plate.search(regex) != -1)) {
+        output += '<div class=".col- card">';
+        output += '<div class=".col- card-body">';
+        output += '<h5>' + val.name + '</h5>';
+        output += '<p>' + val.plate + '</p>';
+        output += '</div>';
+        output += '</div>';
+
+      }
+    });
+    output += '</div>';
+    $('#filter-records').html(output);
+  });
+});
 </script>
