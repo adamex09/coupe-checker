@@ -23,7 +23,7 @@ app.get('/db', function (request, response) {
     if (err) {
       return console.error('Error acquiring client', err.stack)
     }
-    client.query('SELECT  * from cars ORDER BY id', (err, result) => { //row_number() OVER () as rnum,
+    client.query('SELECT * from cars ORDER BY id', (err, result) => { //row_number() OVER () as rnum,
       release()
       if (err) {
         return console.error('Error executing query', err.stack)
