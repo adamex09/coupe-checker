@@ -17,6 +17,7 @@ var basic = auth.basic({
 const { Pool, Client } = require('pg')
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL
+  statement_timeout: 10000
 })
 app.get('/db', function (request, response) {
   pool.connect((err, client, release) => {
