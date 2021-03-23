@@ -18,7 +18,7 @@ const { Pool, Client } = require('pg')
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL
 })
-app.get('/db', function (request, response) {
+app.get('/db?ssl=true', function (request, response) {
   pool.connect((err, client, release) => {
     if (err) {
       return console.error('Error acquiring client', err.stack)
