@@ -16,9 +16,9 @@ var basic = auth.basic({
 //Database config
 const { Pool, Client } = require('pg')
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL
+  connectionString: process.env.DATABASE_URL + "?sslmode=require"
 })
-app.get('/db?ssl=true', function (request, response) {
+app.get('/db', function (request, response) {
   pool.connect((err, client, release) => {
     if (err) {
       return console.error('Error acquiring client', err.stack)
